@@ -1,0 +1,219 @@
+# Example automations.yaml entry
+- alias: "Shelly Sync at HA Start"
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+#  - delay: 00:00:02
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7672ED/state"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7678CE/state"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7672ED/POWER"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7672ED/POWER"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7678CE/POWER2"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/state"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/Backlog"
+        payload: "Switchmode1 12; Switchmode2 12; Switchtopic 0; ButtonTopic 0; SetOption32 10; SetOption68 1"     
+#Switchtopic 0; switch controls the corresponding relay, 
+#ButtonTopic 0 disable buttontopic as it overrides rules for buttons                
+#SetOption1 1 : Allow  single, double and hold press button actions, no reset
+#SetOption11 1: swap the single and doublepress function 
+#SetOption13 1: allows immediate action on single button press
+#SetOption32 20 : Set key hold time from 0.1 to 10 seconds (20 = 2 seconds)
+#SetOption68 1: treat PWM as separate channels
+
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/Rule1"
+        payload: "on switch1#state=2 do publish stat/richelly/DVES_B062B0/power1 toggle endon
+                  on switch1#state=3 do publish stat/richelly/DVES_B062B0/power1 hold endon
+                  on switch1#state=4 do publish stat/richelly/DVES_B062B0/power1 inv endon
+                  on switch1#state=5 do publish stat/richelly/DVES_B062B0/power1 clear endon"
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/Rule1"
+        payload: "1"
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/Rule2"
+        payload: "on switch2#state=2 do publish stat/richelly/DVES_B062B0/power2 toggle endon
+                  on switch2#state=3 do publish stat/richelly/DVES_B062B0/power2 hold endon
+                  on switch2#state=4 do publish stat/richelly/DVES_B062B0/power2 inv endon
+                  on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon"
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_B062B0/Rule2"
+        payload: "1"
+
+
+- alias: "every 5 minutes"
+  trigger:
+    platform: time_pattern
+    # You can also match on interval. This will match every 5 minutes
+    minutes: "/5"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_76CBF3/state"
+        payload: ""
+    - service: mqtt.publish
+      data:
+        topic: "cmnd/richelly/DVES_7678CE/state"
+        payload: ""
+
+- alias: Alert when a critical device goes offline
+  trigger:
+    - platform: state
+      entity_id: device_tracker.204_dves_76cbf3, device_tracker.100_huawei
+      from: 'home'
+      to: 'not_home'
+      for:
+        minutes: 2
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >
+          {% if states.automation.alert_when_a_critical_device_goes_offline.last_triggered is not none %}
+            {% if as_timestamp(now()) | int   -  as_timestamp(states.automation.alert_when_a_critical_device_goes_offline.attributes.last_triggered) | int > 3600 %} true {% else %} false
+            {% endif %}
+          {% else %}
+          false
+          {% endif %}
+  action:
+    - service: persistent_notification.create
+      data:
+        message: >
+          {% for state_i in states.device_tracker %}      
+          {% if  'not_home'== state_i.state %}  
+          {{ state_i.entity_id }}={{ state_i.state }},
+          {% endif %}
+          {% endfor %}
+        title: Device Alert
+
+
+- id: '1573633991019'
+  alias: Switch schaltet Relais aus
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.dves_7678ce_switch
+    platform: state
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.dves_7678ce_relais
+    service: switch.turn_off
+
+- id: '1573634184036'
+  alias: Switch schaltet Relais an
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.dves_7678ce_switch
+    platform: state
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.dves_7678ce_relais
+    service: switch.turn_on
+
+
+- alias: 'light toggle'
+  trigger:
+  - entity_id: sensor.dves_b95200_switch_2
+    platform: state
+    to: 'toggle'
+  action:
+  - data:
+      entity_id: light.dves_b062b0_light_3
+    service: light.toggle
+  - service: mqtt.publish
+    data:
+      topic: "stat/richelly/DVES_B062B0/power2"
+      payload: "clear"
+
+- alias: 'light inc'
+  trigger:
+  - entity_id: sensor.dves_b95200_switch_2
+    platform: state
+    from: 'clear' 
+    to: 'hold'
+  action:
+  - data:
+      entity_id: light.dves_b062b0_light_3
+    service: light.turn_on  
+  - service: mqtt.publish
+    data:
+      topic: "stat/richelly/DVES_B062B0/power2"
+      payload: "clear"
+  - service: mqtt.publish
+    data:
+      topic: "cmnd/richelly/DVES_B062B0/channel3"
+      payload: "+"
+
+- alias: 'switch inc dec'
+  trigger:
+  - entity_id: sensor.dves_b95200_switch_2
+    platform: state
+    from: 'clear'
+    to: 'inv'
+  action: 
+  - service: mqtt.publish
+    data:
+      topic: "stat/richelly/DVES_B062B0/power2"
+      payload: "dec_clear"
+
+
+- alias: 'switch dec inc'
+  trigger:
+  - entity_id: sensor.dves_b95200_switch_2
+    platform: state
+    from: 'dec_clear'
+    to: 'inv'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: "stat/richelly/DVES_B062B0/power2"
+      payload: "clear"
+
+- alias: 'light dec'
+  trigger:
+  - entity_id: sensor.dves_b95200_switch_2
+    platform: state
+    from: 'dec_clear'
+    to: 'hold'
+  action:
+  - data:
+      entity_id: light.dves_b062b0_light_3
+    service: light.turn_on    
+  - service: mqtt.publish
+    data:
+      topic: "stat/richelly/DVES_B062B0/power2"
+      payload: "dec_clear"
+  - service: mqtt.publish
+    data:
+      topic: "cmnd/richelly/DVES_B062B0/channel3"
+      payload: "-"
+

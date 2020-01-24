@@ -1,0 +1,213 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+# Activate the configuration editor
+config:
+
+#group: !include groups.yaml
+
+automation: !include automations.yaml
+
+script: !include scripts.yaml
+
+mqtt:
+  broker: 192.168.2.2
+
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.2.200-255
+    home_interval: 1
+    interval_seconds: 30
+    consider_home: 90
+
+  - platform: nmap_tracker
+    hosts: 192.168.2.100-150
+    home_interval: 1
+    interval_seconds: 30
+    consider_home: 900    
+
+switch:
+  - platform: mqtt
+    name: "DVES_7678CE_Relais"
+    state_topic: "stat/richelly/DVES_7678CE/POWER2"
+    command_topic: "cmnd/richelly/DVES_7678CE/POWER2"
+#    availability_topic: "tele/richelly/DVES_7678CE/LWT"
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 1
+    retain: false
+
+  - platform: mqtt
+    name: "DVES_76CBF3_Relais1"
+    state_topic: "stat/richelly/DVES_76CBF3/POWER3"
+    command_topic: "cmnd/richelly/DVES_76CBF3/POWER3"
+#    availability_topic: "tele/richelly/DVES_7678CE/LWT"
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 1
+    retain: false
+
+  - platform: mqtt
+    name: "DVES_76CBF3_Relais2"
+    state_topic: "stat/richelly/DVES_76CBF3/POWER4"
+    command_topic: "cmnd/richelly/DVES_76CBF3/POWER4"
+#    availability_topic: "tele/richelly/DVES_7678CE/LWT"
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 1
+    retain: false
+
+  - platform: mqtt
+    name: "DVES_7672ED"
+    state_topic: "stat/richelly/DVES_7672ED/POWER"
+    command_topic: "cmnd/richelly/DVES_7672ED/POWER"
+#    availability_topic: "tele/richelly/DVES_7672ED/LWT"
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+    state_on: "ON"
+    state_off: "OFF"
+    optimistic: false
+    qos: 1
+    retain: false
+
+light:
+  - platform: mqtt
+    name: "DVES_B062B0_Light_3"
+    command_topic: "cmnd/richelly/DVES_B062B0/POWER3"
+    state_topic: "stat/richelly/DVES_B062B0/RESULT"
+    state_value_template: "{{value_json.POWER3}}"
+#    availability_topic: "tele/richelly/DVES_B062B0/LWT"
+    brightness_command_topic: "cmnd/richelly/DVES_B062B0/Channel3"
+    brightness_state_topic: "stat/richelly/DVES_B062B0/RESULT"
+    brightness_scale: 100
+#    on_command_type: "brightness"
+    brightness_value_template: "{{value_json.Channel3}}"
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    qos: 1
+    retain: false
+
+  - platform: mqtt
+    name: "Light 1"
+    command_topic: "cmnd/light1/POWER"
+    state_topic: "tele/light1/STATE"
+    state_value_template: "{{value_json.POWER}}"
+#    availability_topic: "tele/light1/LWT"
+    brightness_command_topic: "cmnd/light1/Dimmer"
+    brightness_state_topic: "tele/light1/STATE"
+    brightness_scale: 100
+    on_command_type: "brightness"
+    brightness_value_template: "{{value_json.Dimmer}}"
+    white_value_state_topic: "tele/light1/STATE"
+    white_value_command_topic: "cmnd/light1/White"
+    white_value_scale: 100
+    white_value_template: "{{ value_json.Channel[3] }}"
+    rgb_command_topic: "cmnd/light1/Color2"
+    rgb_state_topic: "tele/light1/STATE"
+    rgb_value_template: "{{value_json.Color.split(',')[0:3]|join(',')}}"
+    effect_command_topic: "cmnd/light1/Scheme"
+    effect_state_topic: "tele/light1/STATE"
+    effect_value_template: "{{value_json.Scheme}}"
+    effect_list:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    qos: 1
+    retain: false
+
+binary_sensor:
+  - platform: mqtt
+    name: "DVES_B95200_Switch_1"
+    state_topic: "stat/richelly/DVES_B95200/POWER1"
+    payload_on: "ON"
+    payload_off: "OFF"
+#    availability_topic: "tele/richelly/DVES_B95200/LWT"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+
+  - platform: mqtt
+    name: "DVES_76CBF3_Switch_1"
+    state_topic: "stat/richelly/DVES_76CBF3/POWER1"
+    payload_on: "ON"
+    payload_off: "OFF"
+#    availability_topic: "tele/richelly/DVES_76CBF3/LWT"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+
+  - platform: mqtt
+    name: "DVES_76CBF3_Switch_2"
+    state_topic: "stat/richelly/DVES_76CBF3/POWER2"
+    payload_on: "ON"
+    payload_off: "OFF"
+#    availability_topic: "tele/richelly/DVES_76CBF3/LWT"
+    payload_available: “Online”
+    payload_not_available: “Offline”
+
+sensor:
+  - platform: mqtt
+    name: "richelly IP"
+    state_topic: 'stat/richelly/DVES_76CBF3/RESULT'
+    value_template: "{{ value_json.IPAddress1.split(' ')[1].replace('(','').replace(')','') }}"
+    
+  - platform: mqtt
+    name: "DVES_B95200_Switch_2"
+    state_topic: 'stat/richelly/DVES_B062B0/power2'
+    value_template: "{{value}}"    
+
+
+input_number:
+  light_step:
+    name: 'Step the lights this much'
+    initial: 10
+    min: 1
+    max: 20
+    step: 1
+
+  light_minimum:
+    name: 'No dimmer than this'
+    initial: 5
+    min: 1
+    max: 50
+    step: 1
+
+  light_maximum:
+    name: 'No brighter than this'
+    initial: 100
+    min: 50
+    max: 100
+    step: 1
