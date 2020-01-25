@@ -7,14 +7,8 @@ I used a shelly_2 to control a shelly_RGBW
 A short press of the switch sends a message to toggle the dimmer.
 A long press sends repeated messages to increment the dimmer.
 If a second press of the switch follows the first press a message is sent to invert the function from increment to decrement and repeatet messages are sent to decrement the dimmer.
-After releasing the switch a timeout message resets the automation .
+After releasing the switch a timeout message resets the automation.
 
-```
-Of the shelly_2 only one switch (sensor.dves_b95200_switch_2) is used. 
-Only channel 3 of the shelly_RGBW (cmnd/richelly/DVES_B062B0/channel3) is used and works as a dimmer.
-cmnd/richelly/DVES_B062B0/channel3  with payload "+"  increments the dimmer
-cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
-```
 ## Tasmota Rules for shelly_2 Switch
 ### normal toggle function
 on switch2#state=2 do publish stat/richelly/DVES_B062B0/power2 toggle endon
@@ -29,6 +23,12 @@ on switch2#state=4 do publish stat/richelly/DVES_B062B0/power2 inv endon
 on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon
 
 # Example for Automation in Home Assist
+```
+Of the shelly_2 only one switch (sensor.dves_b95200_switch_2) is used. 
+Only channel 3 of the shelly_RGBW (cmnd/richelly/DVES_B062B0/channel3) is used and works as a dimmer.
+cmnd/richelly/DVES_B062B0/channel3  with payload "+"  increments the dimmer
+cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
+```
 ```
 - alias: 'light toggle'
   trigger:
