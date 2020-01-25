@@ -14,7 +14,7 @@ on switch2#state=4 do publish stat/richelly/DVES_B062B0/power2 inv endon
 on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon
 
 # Example for Automation in Home Assist
-
+```
 - alias: 'light toggle'
   trigger:
   - entity_id: sensor.dves_b95200_switch_2
@@ -91,3 +91,4 @@ on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon
     data:
       topic: "cmnd/richelly/DVES_B062B0/channel3"  # execute decrement light on DVES_B062B0 channel 3
       payload: "-"
+```
