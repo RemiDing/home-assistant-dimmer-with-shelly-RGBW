@@ -1,12 +1,11 @@
 
 # I used a shelly_2 to control a shelly_RGBW 
----
+```
 Of the shelly_2 only one switch (sensor.dves_b95200_switch_2) is used. 
 Only channel 3 of the shelly_RGBW (cmnd/richelly/DVES_B062B0/channel3) is used and works as a dimmer.
 cmnd/richelly/DVES_B062B0/channel3  with payload "+"  increments the dimmer
 cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
----
-
+```
 ## Tasmota Rules for shelly_2 Switch
 ### normal toggle function
 on switch2#state=2 do publish stat/richelly/DVES_B062B0/power2 toggle endon
