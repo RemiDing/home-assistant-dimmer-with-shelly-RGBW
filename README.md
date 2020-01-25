@@ -4,10 +4,10 @@ With Switchmode 11 and 12 you can control a dimmer with one switch.
 
 I used a shelly_2 to control a shelly_RGBW 
 
-A short press of the switch sends a message to toggle the dimmer
-A long press sends repeated messages to increment the dimmer
-If a second press of the switch follows the first press a message is sent to invert the function from increment to decrement and repeatet messages are sent to decrement the dimmer
-After releasing the switch a timeout message resets the Automation 
+A short press of the switch sends a message to toggle the dimmer.
+A long press sends repeated messages to increment the dimmer.
+If a second press of the switch follows the first press a message is sent to invert the function from increment to decrement and repeatet messages are sent to decrement the dimmer.
+After releasing the switch a timeout message resets the Automation .
 
 ```
 Of the shelly_2 only one switch (sensor.dves_b95200_switch_2) is used. 
