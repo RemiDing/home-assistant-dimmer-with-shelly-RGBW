@@ -11,16 +11,16 @@ After releasing the switch a timeout message resets the automation.
 
 ## Tasmota Rules for shelly_2 Switch
 ### normal toggle function
-on switch2#state=2 do publish stat/richelly/DVES_B062B0/power2 toggle endon
+on switch2#state=2 do publish stat/richelly/DVES_B95200/power2 toggle endon
 
-### hold will increment or decrement the dimmer
-on switch2#state=3 do publish stat/richelly/DVES_B062B0/power2 hold endon
+### keeping the switch closed will increment (or decrement) the dimmer
+on switch2#state=4 do publish stat/richelly/DVES_B95200/power2 inc_dec endon
 
-### inversion of increment and decrement for the next hold states
-on switch2#state=4 do publish stat/richelly/DVES_B062B0/power2 inv endon
+### inversion of increment and decrement for the next inc_dec states
+on switch2#state=5 do publish stat/richelly/DVES_B95200/power2 inv endon
 
 ### timeout will clear all functionalities
-on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon
+on switch2#state=6 do publish stat/richelly/DVES_B95200/power2 clear endon
 
 # Example for Automation in Home Assist
 ```
@@ -41,7 +41,7 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
     service: light.toggle
   - service: mqtt.publish
     data: 
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
 
 - alias: 'light inc'
@@ -49,14 +49,14 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
   - entity_id: sensor.dves_b95200_switch_2
     platform: state
     from: 'clear' 
-    to: 'hold'
+    to: 'inc_dec'
   action:
   - data:
       entity_id: light.dves_b062b0_light_3
     service: light.turn_on  
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
   - service: mqtt.publish
     data:
@@ -72,7 +72,7 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
   action: 
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2" # set the state of DVES_B062B0 power2 to "dec"
+      topic: "stat/richelly/DVES_B95200/power2" # set the state of DVES_B95200 power2 to "dec"
       payload: "dec"   
 
 
@@ -85,7 +85,7 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
   action:
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
 
 - alias: 'light dec'
@@ -93,14 +93,14 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
   - entity_id: sensor.dves_b95200_switch_2
     platform: state
     from: 'dec'
-    to: 'hold'
+    to: 'inc_dec'
   action:
   - data:
       entity_id: light.dves_b062b0_light_3
     service: light.turn_on    
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "dec"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B062B0 power2 to "dec"
       payload: "dec"
   - service: mqtt.publish
     data:

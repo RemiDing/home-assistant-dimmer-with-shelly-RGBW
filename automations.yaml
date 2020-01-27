@@ -19,7 +19,7 @@
       data:
         topic: "cmnd/richelly/DVES_B95200/Rule1"
         payload: "on switch1#state=2 do publish stat/richelly/DVES_B95200/power1 toggle endon
-                  on switch1#state=4 do publish stat/richelly/DVES_B95200/power1 hold endon
+                  on switch1#state=4 do publish stat/richelly/DVES_B95200/power1 inc_dec endon
                   on switch1#state=5 do publish stat/richelly/DVES_B95200/power1 inv endon
                   on switch1#state=6 do publish stat/richelly/DVES_B95200/power1 clear endon"
     - service: mqtt.publish
@@ -30,7 +30,7 @@
       data:
         topic: "cmnd/richelly/DVES_B95200/Rule2"
         payload: "on switch2#state=2 do publish stat/richelly/DVES_B95200/power2 toggle endon
-                  on switch2#state=4 do publish stat/richelly/DVES_B95200/power2 hold endon
+                  on switch2#state=4 do publish stat/richelly/DVES_B95200/power2 inc_dec endon
                   on switch2#state=5 do publish stat/richelly/DVES_B95200/power2 inv endon
                   on switch2#state=6 do publish stat/richelly/DVES_B95200/power2 clear endon"
     - service: mqtt.publish
@@ -58,7 +58,7 @@
   - entity_id: sensor.dves_b95200_switch_2
     platform: state
     from: 'clear' 
-    to: 'hold'
+    to: 'inc_dec'
   action:
   - data:
       entity_id: light.dves_b062b0_light_3
@@ -102,7 +102,7 @@
   - entity_id: sensor.dves_b95200_switch_2
     platform: state
     from: 'dec'
-    to: 'hold'
+    to: 'inc_dec'
   action:
   - data:
       entity_id: light.dves_b062b0_light_3
