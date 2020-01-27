@@ -7,7 +7,7 @@
     - delay: 00:00:10
     - service: mqtt.publish
       data:
-        topic: "cmnd/richelly/DVES_B062B0/Backlog"
+        topic: "cmnd/richelly/DVES_B95200/Backlog"
         payload: "Switchmode1 12; Switchmode2 12; Switchtopic 0; ButtonTopic 0; SetOption32 10; SetOption68 1"     
 #Switchmode 12: Dimmer mode for switches
 #Switchtopic 0: switch controls the corresponding relay, 
@@ -17,25 +17,25 @@
 
     - service: mqtt.publish
       data:
-        topic: "cmnd/richelly/DVES_B062B0/Rule1"
-        payload: "on switch1#state=2 do publish stat/richelly/DVES_B062B0/power1 toggle endon
-                  on switch1#state=3 do publish stat/richelly/DVES_B062B0/power1 hold endon
-                  on switch1#state=4 do publish stat/richelly/DVES_B062B0/power1 inv endon
-                  on switch1#state=5 do publish stat/richelly/DVES_B062B0/power1 clear endon"
+        topic: "cmnd/richelly/DVES_B95200/Rule1"
+        payload: "on switch1#state=2 do publish stat/richelly/DVES_B95200/power1 toggle endon
+                  on switch1#state=4 do publish stat/richelly/DVES_B95200/power1 hold endon
+                  on switch1#state=5 do publish stat/richelly/DVES_B95200/power1 inv endon
+                  on switch1#state=6 do publish stat/richelly/DVES_B95200/power1 clear endon"
     - service: mqtt.publish
       data:
-        topic: "cmnd/richelly/DVES_B062B0/Rule1"
+        topic: "cmnd/richelly/DVES_B95200/Rule1"
         payload: "1"
     - service: mqtt.publish
       data:
-        topic: "cmnd/richelly/DVES_B062B0/Rule2"
-        payload: "on switch2#state=2 do publish stat/richelly/DVES_B062B0/power2 toggle endon
-                  on switch2#state=3 do publish stat/richelly/DVES_B062B0/power2 hold endon
-                  on switch2#state=4 do publish stat/richelly/DVES_B062B0/power2 inv endon
-                  on switch2#state=5 do publish stat/richelly/DVES_B062B0/power2 clear endon"
+        topic: "cmnd/richelly/DVES_B95200/Rule2"
+        payload: "on switch2#state=2 do publish stat/richelly/DVES_B95200/power2 toggle endon
+                  on switch2#state=4 do publish stat/richelly/DVES_B95200/power2 hold endon
+                  on switch2#state=5 do publish stat/richelly/DVES_B95200/power2 inv endon
+                  on switch2#state=6 do publish stat/richelly/DVES_B95200/power2 clear endon"
     - service: mqtt.publish
       data:
-        topic: "cmnd/richelly/DVES_B062B0/Rule2"
+        topic: "cmnd/richelly/DVES_B95200/Rule2"
         payload: "1"
 
 
@@ -50,7 +50,7 @@
     service: light.toggle
   - service: mqtt.publish
     data: 
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
 
 - alias: 'light inc'
@@ -65,7 +65,7 @@
     service: light.turn_on  
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
   - service: mqtt.publish
     data:
@@ -81,7 +81,7 @@
   action: 
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2" # set the state of DVES_B062B0 power2 to "dec"
+      topic: "stat/richelly/DVES_B95200/power2" # set the state of DVES_B95200 power2 to "dec"
       payload: "dec"   
 
 
@@ -94,7 +94,7 @@
   action:
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "clear"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "clear"
       payload: "clear"
 
 - alias: 'light dec'
@@ -109,7 +109,7 @@
     service: light.turn_on    
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B062B0/power2"  # set the state of DVES_B062B0 power2 to "dec"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "dec"
       payload: "dec"
   - service: mqtt.publish
     data:
