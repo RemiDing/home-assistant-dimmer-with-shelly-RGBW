@@ -2,6 +2,17 @@
 # New switchmodes for Tasmota
 With Switchmode 11 and 12 you can control a dimmer with one switch.
 
+## SwitchMode 11
+Set push-button with dimmer mode 
+
+Tasmota will send a TOGGLE command (switch2#state=2) when the button is pressed for a short time and is then released. When pressing the button (closing the circuit) for a long time (set in SetOption32) Tasmota sends repeated INC_DEC (increment or decrement the dimmer) commands (switch2#state=4) as long as the button is pressed. Releasing the button starts a internal timer, the time is set in SetOption32. When released for the time set in SetOption32 Tasmota sends a CLEAR command (switch2#state=6). If the button is pressed again before the timeout Tasmota sends a INV command (switch#state=5).
+
+## SwitchMode 12
+Set inverted push-button with dimmer mode.
+The same as Switchmode 11 with inverted Input
+
+
+# My setup
 I used a shelly_2 to control a shelly_RGBW 
 
 A short press of the switch sends a message to toggle the dimmer.
