@@ -8,7 +8,7 @@
     - service: mqtt.publish
       data:
         topic: "cmnd/richelly/DVES_B95200/Backlog"
-        payload: "Switchmode1 12; Switchmode2 12; Switchtopic 0; ButtonTopic 0; SetOption32 10; SetOption68 1"     
+        payload: "Switchmode1 11; Switchmode2 11; Switchtopic 0; ButtonTopic 0; SetOption32 10; SetOption68 1"
 #Switchmode 12: Dimmer mode for switches
 #Switchtopic 0: switch controls the corresponding relay, 
 #ButtonTopic 0 disable buttontopic as it overrides rules for buttons                
