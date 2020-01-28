@@ -111,7 +111,7 @@ cmnd/richelly/DVES_B062B0/channel3  with payload "-"  decrements the dimmer
     service: light.turn_on    
   - service: mqtt.publish
     data:
-      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B062B0 power2 to "dec"
+      topic: "stat/richelly/DVES_B95200/power2"  # set the state of DVES_B95200 power2 to "dec"
       payload: "dec"
   - service: mqtt.publish
     data:
