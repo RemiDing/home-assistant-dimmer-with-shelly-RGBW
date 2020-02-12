@@ -44,3 +44,8 @@ sensor:
     name: "DVES_B95200_Switch_2"    # Switch 2 is a sensor with states: toggle, hold, inv, clear, dec
     state_topic: 'stat/richelly/DVES_B95200/power2'
     value_template: "{{value}}"    
+
+media_player:
+  - platform: volumio
+    host: 192.168.2.3
+    port: 3000
